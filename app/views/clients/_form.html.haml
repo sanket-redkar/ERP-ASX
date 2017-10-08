@@ -1,0 +1,6 @@
+= simple_form_for(@client, html: { class: 'horizontal-form client display-grid' }) do |f|
+  = error_messages(@client)
+  = f.input :name, required: true
+  .pull-right.mar-top-1
+    = f.button :submit, class: 'btn btn-primary'
+    = link_to t('.cancel', default: t("helpers.links.cancel")), clients_path, class: 'btn btn-default'

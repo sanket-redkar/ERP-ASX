@@ -1,0 +1,5 @@
+- model_class = Reporting
+- content_for :head do
+  = t '.title', default: [:'helpers.titles.edit', 'Edit %{model}'], model:  model_class.model_name.human.titleize
+.page-header
+= render partial: 'form'

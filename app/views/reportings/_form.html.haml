@@ -1,0 +1,10 @@
+= simple_form_for(@reporting.becomes(Reporting), html: { class: 'horizontal-form reporting display-grid' }) do |f|
+  = f.input :type, as: :select, collection: Reporting.subclass_names.collect{ |r| [r.split('::')[1], r] }, prompt: 'Select Type', required: true
+  = f.input :date, as: :string, input_html: { class: 'datepicker' }
+  = f.input :campaign_id, collection: Campaign.all.collect{ |c| [c.name, c.id] }
+  = f.input :ooh_site_id, collection: OohSite.all.collect{ |c| ["#{c.name} (#{c.type.split('::')[1]})", c.id] }
+
+
+  .pull-right.mar-top-1
+    = f.submit nil, class: 'btn btn-primary'
+    = link_to t('.cancel', default: t("helpers.links.cancel")), reportings_path, class: 'btn btn-default'

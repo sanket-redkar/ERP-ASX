@@ -1,0 +1,13 @@
+= simple_form_for(@campaign, html: { class: 'horizontal-form campaign display-grid' }) do |f|
+
+  = error_messages(@campaign)
+  = f.input :name, required: true
+  = f.input :client_id, as: :select, collection: Client.all.collect { |d| [d.name ,d.id] }
+  = f.input :starts_on, as: :string, input_html: { class: 'datepicker' }
+  = f.input :ends_on, as: :string, input_html: { class: 'datepicker' }
+  = f.input :image, as: :file
+  - if @campaign.image.url
+    = image_tag @campaign.image.url, class: 'img-circle', width: 100, height: 100
+  .pull-right.mar-top-1
+    = f.submit nil, class: 'btn btn-primary'
+    = link_to t('.cancel', default: t("helpers.links.cancel")),campaigns_path, class: 'btn btn-default'

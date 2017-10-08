@@ -1,0 +1,36 @@
+- model_class = Campaign
+- content_for :head do
+  = "#{t '.title', default: model_class.model_name.human.titleize} : #{@campaign.name}"
+.page-header
+%dl.dl-horizontal
+  %dt
+    %strong
+      = model_class.human_attribute_name(:name)
+      \:
+  %dd= @campaign.name
+  %dt
+    %strong
+      = model_class.human_attribute_name(:starts_on)
+      \:
+  %dd= @campaign.starts_on
+  %dt
+    %strong
+      = model_class.human_attribute_name(:ends_on)
+      \:
+  %dd= @campaign.ends_on
+  %dt
+    %strong
+      = model_class.human_attribute_name(:image)
+      \:
+  %dd
+    = image_tag @campaign.image.url, class: 'img-circle', width: 100, height: 100
+= link_to t('.back', :default => t("helpers.links.back")), campaigns_path, :class => 'btn btn-default'
+= link_to t('.edit', :default => t("helpers.links.edit")),edit_campaign_path(@campaign), :class => 'btn btn-default'
+= link_to t('.destroy', :default => t("helpers.links.destroy")),campaign_path(@campaign), :method => 'delete', :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },:class => 'btn btn-danger'
+
+.pad-all
+
+  = simple_form_for(:campaign_reporting, method: 'GET', url: available_dates_campaign_path(@campaign), html: { class: 'horizontal-form campaign-reporting display-grid' }, remote: true ) do |f|
+    = f.input :ooh_site_id, as: :select, collection: OohSite.all.collect { |d| ["#{d.name} - (#{d.code})", d.id] }
+    .pull-right.mar-top-1
+      = f.submit nil, class: 'btn btn-primary'
