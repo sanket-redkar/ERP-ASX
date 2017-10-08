@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :set_campaign, only: [:show, :edit, :update, :destroy, :available_dates]
+  before_action :set_campaign, only: [:show, :edit, :update, :destroy, :available_dates, :assign_site]
 
   # GET /campaigns
   # GET /campaigns.json
@@ -22,19 +22,28 @@ class CampaignsController < ApplicationController
   end
 
   # GET /campaigns/:id/available_dates
+  # GET /campaigns/:id/available_dates.json
+  # GET /campaigns/:id/available_dates.js
   def available_dates
     respond_to do |format|
       if params[:campaign_reporting].present? && params[:campaign_reporting].kind_of?(ActionController::Parameters)
         if params[:campaign_reporting].keys.include?('ooh_site_id')
           @campaign_reporting = @campaign.fetch_available_dates(params[:campaign_reporting])
           format.js
-          # format.json { render json:  }
+          format.json { render json: @campaign_reporting }
         else
           format.json{ render json: { error: 'starts_on ends_on and ooh_site_id keys data are missing'} }
         end
       else
         format.json{ render json: { error: 'campaign_reporting key data missing'}, status: 400 }
       end
+    end
+  end
+
+  def assign_site
+    @campaign.assign_site(params[:ooh_site_id])
+    respond_to do |format|
+      format.html { redirect_to @campaign, notice: 'Campaign was successfully updated.' }
     end
   end
 

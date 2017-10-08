@@ -3,7 +3,10 @@ Rails.application.routes.draw do
     resources :images
   end
   resources :campaigns do
-    get :available_dates, on: :member
+    member do
+      get :available_dates
+      post :assign_site
+    end
   end
   resources :ooh_sites do
     resources :reportings, only: :index, controller: 'ooh_sites/reportings'

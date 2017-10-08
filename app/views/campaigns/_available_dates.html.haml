@@ -1,0 +1,16 @@
+%table.table.table-hover
+  %thead
+    %tr
+      %th Name
+      %th Dates
+      %th Missing Dates
+      %th Action
+  %tbody
+    - @campaign_reporting.each do |cr|
+      %tr
+        %th= "#{cr['name']}- (#{cr['code']})"
+        %td= cr['occupied_dates'].blank? ? 'Available' : '-'
+        %th= cr['occupied_dates'].join(',')
+        %th= link_to('Assign', assign_site_campaign_path(@campaign, ooh_site_id: cr['id']), method: :post)
+
+
